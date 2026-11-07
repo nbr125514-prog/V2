@@ -1,0 +1,26 @@
+name: Build AimTrainer Windows x64
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configurar
+        run: cmake -S . -B build -A x64
+
+      - name: Compilar
+        run: cmake --build build --config Release --parallel
+
+      - name: Salvar EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: AimTrainer-Windows-x64
+          path: build/Release/AimTrainer.exe
+          if-no-files-found: error
